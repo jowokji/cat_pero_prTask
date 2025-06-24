@@ -1,5 +1,6 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 
-val catApiKey: String = gradleLocalProperties(rootDir).getProperty("catApiKey") ?: ""
+val key: String = gradleLocalProperties(rootDir, providers).getProperty("catApiKey")
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -25,7 +26,7 @@ android {
             useSupportLibrary = true
         }
 
-        buildConfigField("String", "CAT_API_KEY", "\"$catApiKey\"")
+        buildConfigField("String", "CAT_API_KEY", "\"$key\"")
     }
 
     buildTypes {
@@ -74,19 +75,16 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
-    // Networking
     implementation(libs.retrofit)
     implementation(libs.retrofit.kotlinx.serialization)
     implementation(libs.okhttp.logging)
     implementation(libs.kotlinx.serialization.json)
 
-    // Image loading
     implementation(libs.coil.compose)
 
-    // ViewModel
     implementation(libs.androidx.lifecycle.viewmodel.compose)
 
-    // Hilt
+
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
     implementation(libs.androidx.hilt.navigation)

@@ -1,10 +1,9 @@
-
 package com.example.network.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.network.data.model.CatImageModel
-import domain.GetCatImagesUseCase
+import com.example.network.domain.usecase.GetCatImagesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,7 +15,6 @@ import javax.inject.Inject
 class CatViewModel @Inject constructor(
     private val getCatImagesUseCase: GetCatImagesUseCase
 ) : ViewModel() {
-
     private val _cats = MutableStateFlow<List<CatImageModel>>(emptyList())
     val cats: StateFlow<List<CatImageModel>> = _cats
 
@@ -37,18 +35,16 @@ class CatViewModel @Inject constructor(
         viewModelScope.launch {
             if (currentPage == 0) _uiState.value = UiState.Loading
             try {
-                val result = getCatImagesUseCase(currentPage, pageSize)
-                result.onSuccess { images ->
-                    if (currentPage == 0) {
-                        _cats.value = images
-                    } else {
-                        _cats.update { it + images }
-                    }
-                    currentPage++
-                    _uiState.value = UiState.Success(_cats.value)
-                }.onFailure { e ->
-                    _uiState.value = UiState.Error(e.message ?: "Unknown error")
+                val images = getCatImagesUseCase(pageSize)
+                if (currentPage == 0) {
+                    _cats.value = images
+                } else {
+                    _cats.update { it + images }
                 }
+                currentPage++
+                _uiState.value = UiState.Success(_cats.value)
+            } catch (e: Exception) {
+                _uiState.value = UiState.Error(e.message ?: "Unknown error")
             } finally {
                 isLoadingMore = false
             }
