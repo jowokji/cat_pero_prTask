@@ -1,3 +1,4 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 
 plugins {
     alias(libs.plugins.android.application)
@@ -19,11 +20,9 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        val catApiKey: String = gradleLocalProperties(rootDir).getProperty("catApiKey") ?: ""
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary = true
-        }
+        val catApiKey = providers
+            .gradleProperty("catApiKey")
+            .orNull ?: ""
 
         buildConfigField("String", "CAT_API_KEY", "\"$catApiKey\"")
     }

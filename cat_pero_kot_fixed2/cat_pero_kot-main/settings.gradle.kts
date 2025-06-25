@@ -19,5 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Network"
+rootProject.name = "cat_pero_kot-main"
 include(":app")
