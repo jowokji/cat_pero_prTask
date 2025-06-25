@@ -19,7 +19,6 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        // Load Cat API Key from local.properties
         val catApiKey: String = gradleLocalProperties(rootDir).getProperty("catApiKey") ?: ""
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -75,19 +74,18 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
-    // Networking
+
     implementation(libs.retrofit)
     implementation(libs.retrofit.kotlinx.serialization)
     implementation(libs.okhttp.logging)
     implementation(libs.kotlinx.serialization.json)
 
-    // Image loading
     implementation(libs.coil.compose)
 
-    // ViewModel
+
     implementation(libs.androidx.lifecycle.viewmodel.compose)
 
-    // Hilt
+
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
     implementation(libs.androidx.hilt.navigation)
